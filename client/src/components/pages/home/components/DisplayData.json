@@ -1,0 +1,26 @@
+[
+    {
+        "image": "https://www.viaggi-usa.it/wp-content/uploads/2018/01/Golden-Gate-Park-San-Francisco-Cosa-Vedere.jpg",
+        "place": "Golden Gate Park",
+        "address": "San Francisco, California.",
+        "phone": "Phone: +1 415-831-2700.",
+        "rating": "4.7",
+        "hours": "Hours: Open 24 hours."
+    },
+    {
+        "image": "https://www.tclf.org/sites/default/files/thumbnails/image/CA_SanFrancisco_PioneerPark_byAlexisWoods_2019_004_sig_002.jpg",
+        "place": "Pioneer Park",
+        "address": "Coit Tower, 1 Telegraph Hill Blvd, San Francisco, CA 94133.",
+        "phone": "Phone: +1 415-274-0291.",
+        "rating": "4.6",
+        "hours": "Hours: 5:00-0:00."
+    },
+    {
+        "image": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Alamo_Square_with_Painted_Ladies%2C_SF%2C_CA%2C_jjron_26.03.2012.jpg",
+        "place": "Alamo Square",
+        "address": "Hayes St, San Francisco.",
+        "phone": "Phone: +1 415-218-0259.",
+        "rating": "4.7",
+        "hours": "Hours: 5:00-0:00."
+    }
+]
