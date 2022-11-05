@@ -5,7 +5,7 @@ from sqlalchemy import and_
 import calendar
 import googlemaps
 from .models import EventsTable, SavedPlacesTable
-from website import db
+from flask_server.website import db
 from flask_cors import cross_origin
 import json
 

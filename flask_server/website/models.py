@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user
 from sqlalchemy.sql import func
-from website import db
+from flask_server.website import db
 
 class SavedPlacesTable(db.Model):
     id = db.Column(db.Integer, primary_key=True)

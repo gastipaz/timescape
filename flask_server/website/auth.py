@@ -1,8 +1,8 @@
 from flask import Blueprint, request
-from website.models import UserTable
+from .models import UserTable
 from flask_login import login_required, logout_user, current_user
 from flask_cors import cross_origin
-from website.user_validation import User
+from .user_validation import User
 
 auth = Blueprint('auth', __name__)
 
