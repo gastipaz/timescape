@@ -21,8 +21,8 @@ def create_app():
 
     from .views import views
     from .auth import auth
-    CORS(views)
-    CORS(auth)
+    CORS(views, origins=["https://timescape-ep.netlify.app"])
+    CORS(auth, origins=["https://timescape-ep.netlify.app"])
 
     # login_manager.login_view = 'auth.access'
     login_manager.init_app(app)
