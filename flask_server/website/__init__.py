@@ -11,7 +11,7 @@ DB_NAME = "timescape_users.db"
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'gastipaz' 
-    CORS(app)
+    CORS(app, origins=["https://timescape-ep.netlify.app/"])
     login_manager = LoginManager()
     # app.config['SQLALCHEMY_DATABASE_URI']=f'sqlite:///{DB_NAME}'
     app.config['SQLALCHEMY_DATABASE_URI']="postgresql://vyxbleyfeiiwje:607d4a0af85e726c0a9eab131ab5aecb706662ae33b4d67fb66e14e26b260edc@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/d5mftu97vfn67g"
