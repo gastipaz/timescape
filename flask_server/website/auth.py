@@ -42,8 +42,8 @@ def signup():
     return response
 
 @auth.route('/user', methods=["GET"])
-# @cross_origin(supports_credentials=True)
-@cross_origin()
+@cross_origin(supports_credentials=True)
+# @cross_origin()
 def user():
     if (current_user):
         return {"auth":True, "name": current_user.first_name}
