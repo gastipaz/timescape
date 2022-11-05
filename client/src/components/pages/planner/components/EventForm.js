@@ -11,7 +11,7 @@ const EventForm = ({ date }) => {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const url = "http://localhost:5000/createEvent";
+        const url = "/createEvent";
         const title = document.getElementById('title');
         const message = document.getElementById('message');
         const place_name = document.getElementById('place_name');

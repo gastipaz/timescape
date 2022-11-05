@@ -21,7 +21,7 @@ const StackNav = () => {
   }
 
   const logoutUser = async () => {
-    const result = await postData("http://localhost:5000/logout")
+    const result = await postData("/logout")
     navigate("/")
     removeAuthState({value: result.data.authenticated, message: ""})
 }

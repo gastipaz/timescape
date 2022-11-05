@@ -21,9 +21,9 @@ const PersonalPage = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const eventsData = await getData("http://localhost:5000/userEvents");
-            const savedPlacesData = await getData("http://localhost:5000/getSavedPlaces");
-            const user = await getData("http://localhost:5000/user");
+            const eventsData = await getData("/userEvents");
+            const savedPlacesData = await getData("/getSavedPlaces");
+            const user = await getData("/user");
             setEvents(eventsData.data?.events);
             setSaved(savedPlacesData.data?.saved);
             setUser(user?.data);
@@ -39,7 +39,7 @@ const PersonalPage = () => {
         navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
             let coordinates = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
             async function postRequest() {
-                const url = "http://localhost:5000/getNearby";
+                const url = "/getNearby";
                 let result = await postData(url,{coordinates: coordinates, type: type.type})
                 setNearby(result?.data?.nearby)
                 setShowNearby(true);

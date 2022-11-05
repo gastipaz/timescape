@@ -16,8 +16,8 @@ const Planner = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const dates = await getData("http://localhost:5000/getEvents/dates");
-            const result = await getData("http://localhost:5000/getEvents");
+            const dates = await getData("/getEvents/dates");
+            const result = await getData("/getEvents");
             setFilteredEvents(result.data?.events);
             setDatesList(dates.data?.dates);
             setLoading(false);
@@ -29,8 +29,8 @@ const Planner = () => {
     async function DisplayEvents(value) {
         const selected_date = new Date(value);
         const formatted_date = new Date(selected_date.getTime() + Math.abs(selected_date.getTimezoneOffset() * 60000)).toUTCString();
-        const result = await postData(`http://localhost:5000/getEvents`,{date: formatted_date});
-        const dates = await getData("http://localhost:5000/getEvents/dates");
+        const result = await postData(`/getEvents`,{date: formatted_date});
+        const dates = await getData("/getEvents/dates");
         setFilteredEvents(result.data?.events)
         setDatesList(dates.data?.dates);
     }

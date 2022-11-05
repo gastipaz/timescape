@@ -8,7 +8,7 @@ const EventCard = ({event}) => {
   const {setFilteredEvents, setEvents} = useContext(DataContext);
 
   const deleteEntry = async (entry_id) => {
-    const result = await postData("http://localhost:5000/deleteEvent", {entry_id:entry_id});
+    const result = await postData("/deleteEvent", {entry_id:entry_id});
     console.log(result.data?.events);
     setFilteredEvents(result.data?.events);
     setEvents(result.data?.events);

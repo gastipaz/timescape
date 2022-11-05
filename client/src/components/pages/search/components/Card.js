@@ -19,7 +19,7 @@ const Card = ({ image, name, address, rating, phone, hours, maps_url, id, map })
     const location = useLocation()
 
     async function addFavorite(image=null,place=null,address=null,phone=null,rating=null,maps_url=null,id=null) {
-        const url = "http://localhost:5000/savePlace";
+        const url = "/savePlace";
         let favorite = {name: place, address: address, phone_number: phone, rating: rating, maps_url: maps_url, place_id: id, image: image};
         const result = await postData(url, favorite);
         setSaved(result?.data?.saved);
@@ -27,7 +27,7 @@ const Card = ({ image, name, address, rating, phone, hours, maps_url, id, map })
     };
 
     async function deleteFavorite(id) {
-        const url = "http://localhost:5000/deletePlace";
+        const url = "/deletePlace";
         const result = await postData(url, {id: id});
         console.log(result.data?.saved)
         setSaved(result?.data?.saved)

@@ -7,7 +7,7 @@ const SignUp = ({setAuthenticated, setShowAccessWindow}) => {
 
     async function signUp(event) {
         event.preventDefault()
-        const url = "http://localhost:5000/signup";
+        const url = "/signup";
         const firstName = document.getElementById('user_first_name');
         const lastName = document.getElementById('user_last_name');
         const email = document.getElementById('user_email');

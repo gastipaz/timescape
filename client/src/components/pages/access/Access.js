@@ -17,7 +17,7 @@ const Access = () => {
 
   async function auth(event) {
     event.preventDefault()
-    const url = "http://localhost:5000/access";
+    const url = "/access";
     const email = document.getElementById('user_email');
     const password = document.getElementById('user_password');
     const data = JSON.stringify({[email.name]: email.value, [password.name]: password.value});
