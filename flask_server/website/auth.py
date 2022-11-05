@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from .models import UserTable
-from flask_login import logout_user, current_user
+from flask_login import login_required, logout_user, current_user
 from flask_cors import cross_origin
 from .user_validation import User
 
@@ -40,6 +40,7 @@ def signup():
     return response
 
 @auth.route('/user', methods=["GET"])
+@login_required
 @cross_origin(supports_credentials=True)
 def user():
     if (current_user):
@@ -48,6 +49,7 @@ def user():
 
 
 @auth.route('/logout', methods=["POST"])
+@login_required
 @cross_origin(supports_credentials=True)
 def logout():
     logout_user()

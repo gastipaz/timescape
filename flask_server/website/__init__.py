@@ -24,11 +24,11 @@ def create_app():
     CORS(views)
     CORS(auth)
 
-    # login_manager.login_view = 'auth.access'
+    login_manager.login_view = 'auth.access'
     login_manager.init_app(app)
 
-    app.register_blueprint(views)
-    app.register_blueprint(auth)
+    app.register_blueprint(views, url_prefix="/")
+    app.register_blueprint(auth, url_prefix="/")
 
     from .models import UserTable, EventsTable, SavedPlacesTable
 

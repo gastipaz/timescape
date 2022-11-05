@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_login import current_user
+from flask_login import login_required, current_user
 from datetime import datetime
 from sqlalchemy import and_
 import calendar
@@ -16,8 +16,9 @@ today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 events_table = EventsTable
 favorites_table = SavedPlacesTable
 
-@views.route("/")
+# @views.route("/")
 @views.route("/getNearby", methods=["POST"])
+@login_required
 @cross_origin(supports_credentials=True)
 def get_nearby():
     data = request.get_json()              
@@ -33,6 +34,7 @@ def get_nearby():
     return response
 
 @views.route("/savePlace", methods=["POST"])
+@login_required
 @cross_origin(supports_credentials=True)
 def save_place():
     data = request.get_json()
@@ -51,6 +53,7 @@ def save_place():
     return {"saved":response}
 
 @views.route("/getSavedPlaces", methods=["GET"])
+@login_required
 @cross_origin(supports_credentials=True)
 def get_saved_places():
     saved_places = favorites_table.query.filter_by(user_id=current_user.id).all()
@@ -58,6 +61,7 @@ def get_saved_places():
     return {"saved":saved_places_list}
 
 @views.route("/deletePlace", methods=["POST"])
+@login_required
 @cross_origin(supports_credentials=True)
 def delete_place():
     data = request.get_json()
@@ -70,6 +74,7 @@ def delete_place():
     return {"saved":response}
 
 @views.route('/createEvent', methods=["POST"])
+@login_required
 @cross_origin(supports_credentials=True)
 def create_event():
     req = request.get_json().get("data")
@@ -90,6 +95,7 @@ def create_event():
     return response
 
 @views.route('/getEvents', methods=["GET", "POST"])
+@login_required
 @cross_origin(supports_credentials=True)
 def get_events():
     if request.method == "POST":
@@ -101,6 +107,7 @@ def get_events():
     return today_events
 
 @views.route('/getEvents/dates', methods=["GET"])
+@login_required
 @cross_origin(supports_credentials=True)
 def get_events_dates():
     last_day = calendar.monthrange(today.year, today.month)[1]
@@ -111,6 +118,7 @@ def get_events_dates():
     return {"dates": list(dict.fromkeys(dates_list))}
 
 @views.route('/userEvents', methods=["GET"])
+@login_required
 @cross_origin(supports_credentials=True)
 def user_events():
     user_events = events_table.query.filter_by(user_id=current_user.id).order_by(events_table.date.asc(), events_table.time.asc()).all()
@@ -119,6 +127,7 @@ def user_events():
     return {"events": response}
 
 @views.route("/deleteEvent", methods=["POST"])
+@login_required
 @cross_origin(supports_credentials=True)
 def delete_event():
     data = request.get_json()
