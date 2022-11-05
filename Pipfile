@@ -102,6 +102,7 @@ wcwidth = "==0.2.5"
 webencodings = "==0.5.1"
 werkzeug = "==2.1.2"
 widgetsnbextension = "==3.6.1"
+psycopg2 = "*"
 
 [dev-packages]
 
