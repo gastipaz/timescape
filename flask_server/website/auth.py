@@ -7,7 +7,7 @@ from .user_validation import User
 auth = Blueprint('auth', __name__)
 
 @auth.route('/access', methods=["GET", "POST"])
-@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=False)
 def access():
     if request.method == 'POST':
         user = User()
@@ -22,7 +22,7 @@ def access():
     return response
 
 @auth.route('/signup', methods=["GET", "POST"])
-@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=False)
 def signup():
     if request.method == 'POST':
         user = User()
@@ -48,7 +48,7 @@ def user():
 
 
 @auth.route('/logout', methods=["POST"])
-@cross_origin(supports_credentials=True)
+@cross_origin(supports_credentials=False)
 @login_required
 def logout():
     logout_user()
