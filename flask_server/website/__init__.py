@@ -24,7 +24,7 @@ def create_app():
     CORS(views)
     CORS(auth)
 
-    login_manager.login_view = 'auth.access'
+    # login_manager.login_view = 'auth.access'
     login_manager.init_app(app)
 
     app.register_blueprint(views)
