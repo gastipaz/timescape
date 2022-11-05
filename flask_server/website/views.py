@@ -19,7 +19,7 @@ favorites_table = SavedPlacesTable
 @views.route("/")
 @views.route("/getNearby", methods=["POST"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def get_nearby():
     data = request.get_json()              
     nearby_places = gmaps.places_nearby(location=(data['coordinates']["lat"], data['coordinates']["lng"]), radius=10000, type=data["type"])["results"]
@@ -35,7 +35,7 @@ def get_nearby():
 
 @views.route("/savePlace", methods=["POST"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def save_place():
     data = request.get_json()
     name = data.get('name')
@@ -54,7 +54,7 @@ def save_place():
 
 @views.route("/getSavedPlaces", methods=["GET"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def get_saved_places():
     saved_places = favorites_table.query.filter_by(user_id=current_user.id).all()
     saved_places_list = [saved_place.dictFormat() for saved_place in saved_places]
@@ -62,7 +62,7 @@ def get_saved_places():
 
 @views.route("/deletePlace", methods=["POST"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def delete_place():
     data = request.get_json()
     id = data.get("id")
@@ -75,7 +75,7 @@ def delete_place():
 
 @views.route('/createEvent', methods=["POST"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def create_event():
     req = request.get_json().get("data")
     data = json.loads(req)
@@ -96,7 +96,7 @@ def create_event():
 
 @views.route('/getEvents', methods=["GET", "POST"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def get_events():
     if request.method == "POST":
         date = request.get_json()
@@ -108,7 +108,7 @@ def get_events():
 
 @views.route('/getEvents/dates', methods=["GET"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def get_events_dates():
     last_day = calendar.monthrange(today.year, today.month)[1]
     start_date = datetime.strptime(f"1/{today.month}/{today.year}", "%d/%m/%Y")
@@ -119,7 +119,7 @@ def get_events_dates():
 
 @views.route('/userEvents', methods=["GET"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def user_events():
     user_events = events_table.query.filter_by(user_id=current_user.id).order_by(events_table.date.asc(), events_table.time.asc()).all()
     response = [event.dictFormat() for event in user_events if event.date > today or 
@@ -128,7 +128,7 @@ def user_events():
 
 @views.route("/deleteEvent", methods=["POST"])
 @login_required
-@cross_origin(supports_credentials=False)
+@cross_origin(supports_credentials=True)
 def delete_event():
     data = request.get_json()
     id = data.get("entry_id")
