@@ -1,14 +1,13 @@
 from flask import Blueprint, request
 from .models import UserTable
-from flask_login import login_required, logout_user, current_user
+from flask_login import logout_user, current_user
 from flask_cors import cross_origin
 from .user_validation import User
 
 auth = Blueprint('auth', __name__)
 
 @auth.route('/access', methods=["GET", "POST"])
-# @cross_origin(supports_credentials=True)
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def access():
     if request.method == 'POST':
         user = User()
@@ -23,8 +22,7 @@ def access():
     return response
 
 @auth.route('/signup', methods=["GET", "POST"])
-# @cross_origin(supports_credentials=True)
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def signup():
     if request.method == 'POST':
         user = User()
@@ -43,7 +41,6 @@ def signup():
 
 @auth.route('/user', methods=["GET"])
 @cross_origin(supports_credentials=True)
-# @cross_origin()
 def user():
     if (current_user):
         return {"auth":True, "name": current_user.first_name}
@@ -51,9 +48,7 @@ def user():
 
 
 @auth.route('/logout', methods=["POST"])
-# @cross_origin(supports_credentials=True)
-@cross_origin()
-# @login_required
+@cross_origin(supports_credentials=True)
 def logout():
     logout_user()
     return {"authenticated":False}
