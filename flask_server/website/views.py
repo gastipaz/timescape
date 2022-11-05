@@ -16,6 +16,7 @@ today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 events_table = EventsTable
 favorites_table = SavedPlacesTable
 
+@views.route("/")
 @views.route("/getNearby", methods=["POST"])
 @login_required
 @cross_origin(supports_credentials=True)
