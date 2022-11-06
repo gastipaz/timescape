@@ -15,7 +15,6 @@ gmaps = googlemaps.Client(key=key)
 today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 events_table = EventsTable
 favorites_table = SavedPlacesTable
-user = session.get('user')
 
 # @views.route("/")
 @views.route("/getNearby", methods=["POST"])
@@ -46,10 +45,10 @@ def save_place():
     url = data.get('maps_url')
     place_id = data.get('place_id')
     image = data.get('image')
-    new_saved_place = SavedPlacesTable(name=name, address=address, phone_number=phone_number, rating=rating, url=url, place_id=place_id, image=image, user_id=user.id)
+    new_saved_place = SavedPlacesTable(name=name, address=address, phone_number=phone_number, rating=rating, url=url, place_id=place_id, image=image, user_id=session["current_user"].id)
     db.session.add(new_saved_place)
     db.session.commit()
-    saved_places = favorites_table.query.filter_by(user_id=user.id).all()
+    saved_places = favorites_table.query.filter_by(user_id=session["current_user"].id).all()
     response = [place.dictFormat() for place in saved_places]
     return {"saved":response}
 
@@ -57,7 +56,7 @@ def save_place():
 # @login_required
 @cross_origin(supports_credentials=True)
 def get_saved_places():
-    saved_places = favorites_table.query.filter_by(user_id=user.id).all()
+    saved_places = favorites_table.query.filter_by(user_id=session["current_user"].id).all()
     saved_places_list = [saved_place.dictFormat() for saved_place in saved_places]
     return {"saved":saved_places_list}
 
@@ -67,10 +66,10 @@ def get_saved_places():
 def delete_place():
     data = request.get_json()
     id = data.get("id")
-    place = favorites_table.query.filter_by(user_id=user.id, place_id=id).first()
+    place = favorites_table.query.filter_by(user_id=session["current_user"].id, place_id=id).first()
     db.session.delete(place)
     db.session.commit()
-    saved_places = favorites_table.query.filter_by(user_id=user.id).all()
+    saved_places = favorites_table.query.filter_by(user_id=session["current_user"].id).all()
     response = [place.dictFormat() for place in saved_places]
     return {"saved":response}
 
@@ -89,10 +88,10 @@ def create_event():
     time = data.get('time')
     phone_number = data.get('place_number')
     image = (data.get('place_image'))
-    new_event = EventsTable(title=title.capitalize() if title is not None else title, message=message.capitalize() if message is not None else message, date=date, place=place_name, address=place_address, time=time, phone_number=phone_number, image=image, user_id=user.id)
+    new_event = EventsTable(title=title.capitalize() if title is not None else title, message=message.capitalize() if message is not None else message, date=date, place=place_name, address=place_address, time=time, phone_number=phone_number, image=image, user_id=session["current_user"].id)
     db.session.add(new_event)
     db.session.commit()
-    response = filterEvents(user.id, date)
+    response = filterEvents(session["current_user"].id, date)
     return response
 
 @views.route('/getEvents', methods=["GET", "POST"])
@@ -102,9 +101,9 @@ def get_events():
     if request.method == "POST":
         date = request.get_json()
         selected_date = datetime.strptime(date.get("date"), "%a, %d %b %Y %H:%M:%S %Z")
-        sel_date_events = filterEvents(user.id, selected_date)
+        sel_date_events = filterEvents(session["current_user"].id, selected_date)
         return sel_date_events
-    today_events = filterEvents(user.id)
+    today_events = filterEvents(session["current_user"].id)
     return today_events
 
 @views.route('/getEvents/dates', methods=["GET"])
@@ -114,7 +113,7 @@ def get_events_dates():
     last_day = calendar.monthrange(today.year, today.month)[1]
     start_date = datetime.strptime(f"1/{today.month}/{today.year}", "%d/%m/%Y")
     end_date = datetime.strptime(f"{last_day}/{today.month}/{today.year}", "%d/%m/%Y")
-    dates = events_table.query.filter(and_(events_table.user_id == user.id, events_table.date >= start_date, events_table.date <= end_date)).all()
+    dates = events_table.query.filter(and_(events_table.user_id == session["current_user"].id, events_table.date >= start_date, events_table.date <= end_date)).all()
     dates_list = [event.date.strftime('%Y-%m-%d') for event in dates]
     return {"dates": list(dict.fromkeys(dates_list))}
 
@@ -122,7 +121,7 @@ def get_events_dates():
 # @login_required
 @cross_origin(supports_credentials=True)
 def user_events():
-    user_events = events_table.query.filter_by(user_id=user.id).order_by(events_table.date.asc(), events_table.time.asc()).all()
+    user_events = events_table.query.filter_by(user_id=session["current_user"].id).order_by(events_table.date.asc(), events_table.time.asc()).all()
     response = [event.dictFormat() for event in user_events if event.date > today or 
                 event.date == today and datetime.strptime(event.time, "%H:%M").time() > datetime.now().time()]
     return {"events": response}
@@ -133,11 +132,11 @@ def user_events():
 def delete_event():
     data = request.get_json()
     id = data.get("entry_id")
-    event = events_table.query.filter_by(user_id=user.id, id=id).first()
+    event = events_table.query.filter_by(user_id=session["current_user"].id, id=id).first()
     date = event.date if event is not None else today
     db.session.delete(event)
     db.session.commit()
-    response = filterEvents(user.id, date)
+    response = filterEvents(session["current_user"].id, date)
     return response
 
 def filterEvents(user_id, date=today):
