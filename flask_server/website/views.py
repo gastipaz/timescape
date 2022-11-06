@@ -7,9 +7,10 @@ from .models import EventsTable, SavedPlacesTable
 from flask_server.website import db
 from flask_cors import cross_origin
 import json
+import os
 
 views = Blueprint('views', __name__)
-key = "AIzaSyBLqbj_ZaGgYVS2nvw-6gh9w8NlFGn4nP0"
+key = os.getenv("GOOGLE_API_KEY")
 gmaps = googlemaps.Client(key=key)
 today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 events_table = EventsTable

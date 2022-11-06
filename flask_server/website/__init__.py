@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from os import path
+import os
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -11,18 +11,23 @@ DB_NAME = "timescape_users.db"
 sess = Session()
 
 def create_app():
+    secret_key = os.getenv("SECRET_KEY")
+    uri = os.getenv("DATABASE_URL")
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'gastipaz' 
+    app.config['SECRET_KEY'] = secret_key
     CORS(app)
     login_manager = LoginManager()
     # app.config['SQLALCHEMY_DATABASE_URI']=f'sqlite:///{DB_NAME}'
-    app.config['SQLALCHEMY_DATABASE_URI']="postgresql://vyxbleyfeiiwje:607d4a0af85e726c0a9eab131ab5aecb706662ae33b4d67fb66e14e26b260edc@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/d5mftu97vfn67g"
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-    app.config['SESSION_TYPE']='sqlalchemy'
+    app.config['SQLALCHEMY_DATABASE_URI'] = uri
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SESSION_TYPE'] = 'sqlalchemy'
 
     db.init_app(app)
 
-    app.config['SESSION_SQLALCHEMY']=db
+    app.config['SESSION_SQLALCHEMY'] = db
 
     sess.init_app(app)
 
@@ -50,6 +55,7 @@ def create_app():
     return app
 
 def create_database(app):
-    if not path.exists('website/' + DB_NAME):
+    # if not path.exists('website/' + DB_NAME):
+    with app.app_context():
         db.create_all(app = app)
     
