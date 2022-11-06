@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 from .models import UserTable
 from flask_login import login_required, logout_user, current_user
 from flask_cors import cross_origin
@@ -40,19 +40,21 @@ def signup():
     return response
 
 @auth.route('/user', methods=["GET"])
-@login_required
+# @login_required
 @cross_origin(supports_credentials=True)
 def user():
-    if (current_user):
-        return {"auth":True, "name": current_user.first_name}
+    if (session["current_user"]):
+        user = session.get("current_user")
+        return {"auth":True, "name": user.first_name}
     return {"auth": False}
 
 
 @auth.route('/logout', methods=["POST"])
-@login_required
+# @login_required
 @cross_origin(supports_credentials=True)
 def logout():
     logout_user()
+    session["current_user"] = None
     return {"authenticated":False}
 
 

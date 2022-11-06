@@ -1,6 +1,6 @@
-from flask_login import UserMixin
+from flask_login import UserMixin, login_user, current_user
+from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user
 from sqlalchemy.sql import func
 from flask_server.website import db
 
@@ -66,6 +66,7 @@ class UserTable(db.Model, UserMixin):
         if user_table:
             if check_password_hash(user_table.password, password):
                 login_user(user_table, remember=True)
+                session["current_user"] = {"id":current_user.id, "first_name": current_user.first_name}
                 return {"authenticated":True, "message": "Logged in successfully"}
             else:
                 return {"authenticated":False, "message": "Incorrect password. Try again"}
@@ -83,4 +84,5 @@ class UserTable(db.Model, UserMixin):
             db.session.add(new_user_entry)
             db.session.commit()
             login_user(new_user_entry, remember=True)
+            session["current_user"] = {"id":current_user.id, "first_name": current_user.first_name}
             return {"authenticated":True, "message": "Account created successfully"}
