@@ -34,6 +34,8 @@ def get_nearby():
 @views.route("/savePlace", methods=["POST"])
 @cross_origin(supports_credentials=True)
 def save_place():
+    user = session.get("current_user")
+    print(user)
     data = request.get_json()
     name = data.get('name')
     address = data.get('address')
