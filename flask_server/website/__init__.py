@@ -16,7 +16,7 @@ def create_app():
     if uri.startswith("postgres://"):
         uri = uri.replace("postgres://", "postgresql://", 1)
 
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="client/build", static_url_path="")
     CORS(app)
     app.config['SECRET_KEY'] = secret_key
     login_manager = LoginManager()
