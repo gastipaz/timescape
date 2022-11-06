@@ -17,8 +17,8 @@ def create_app():
         uri = uri.replace("postgres://", "postgresql://", 1)
 
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = secret_key
     CORS(app)
+    app.config['SECRET_KEY'] = secret_key
     login_manager = LoginManager()
     # app.config['SQLALCHEMY_DATABASE_URI']=f'sqlite:///{DB_NAME}'
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
@@ -35,8 +35,6 @@ def create_app():
 
     from .views import views
     from .auth import auth
-    CORS(views)
-    CORS(auth)
 
     login_manager.login_view = 'auth.access'
     login_manager.init_app(app)
