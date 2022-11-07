@@ -2,7 +2,6 @@ from flask import Blueprint, request, session
 from datetime import datetime
 from sqlalchemy import and_
 import calendar
-from main import app
 import googlemaps
 from .models import EventsTable, SavedPlacesTable
 from flask_server.website import db
@@ -16,10 +15,6 @@ gmaps = googlemaps.Client(key=key)
 today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 events_table = EventsTable
 favorites_table = SavedPlacesTable
-
-@views.route('/')
-def index():
-    return app.send_static_file('index.html')
 
 @views.route("/getNearby", methods=["POST"])
 @cross_origin(supports_credentials=True)
